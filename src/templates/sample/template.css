@@ -1,0 +1,8 @@
+.common {
+	position: relative;
+}
+
+.someClass {
+	composes: common;
+	color: lime;
+}
