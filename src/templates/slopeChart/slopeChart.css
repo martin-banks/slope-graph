@@ -1,0 +1,15 @@
+.container {
+	position: absolute;
+	top: 100px;
+	left: 300px;
+	width: 500px;
+	height: 500px;
+	border-bottom: solid 1px;
+	box-sizing: border-box;
+}
+
+.lineContainer {
+	position: absolute;
+	width: 500px;
+	height: 500px;
+}
