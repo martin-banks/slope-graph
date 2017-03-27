@@ -4,9 +4,6 @@ import Dot from '../dot/dot'
 import Line from '../line/line'
 
 
-//let {entries} = state.content.entries
-
-
 export default class Slope_Chart {
 	constructor(props){
 		this.props = props
@@ -17,23 +14,25 @@ export default class Slope_Chart {
 
 	createElements(){
 		let {entries} = state.content
+		let {inset, width, dotSize} = state.chartSettings
+
 		Object.keys(entries).map(key => {
 			let entry = entries[key]
 			entries[key].dot_left = new Dot({
-				valX: 0, 
-				valY: 0 - entry.first -20, 
+				valX: inset, 
+				valY: 0 - entry.first - inset, 
 				label: entry.label
 			});
 			entries[key].dot_right = new Dot({
-				valX: 500-20, 
-				valY: 0 - entry.second - 20, 
+				valX: width - inset - (dotSize), 
+				valY: 0 - entry.second - inset, 
 				label: entry.label
 			});
 			entries[key].line = new Line({
-				x1: 0 + 10,
-				x2: 500 - 10,
-				y1: 0-entry.first - 10,
-				y2: 0-entry.second - 10
+				x1: 0 + inset + (dotSize ),
+				x2: width - inset - dotSize,
+				y1: 0 - entry.first - inset + (dotSize / 2),
+				y2: 0 - entry.second - inset + (dotSize / 2)
 			}) 
 		})
 	}
@@ -49,7 +48,6 @@ export default class Slope_Chart {
 		let {entries} = state.content
 		return Object.keys(entries)
 			.map(key => {
-				console.log(entries[key])
 				return entries[key].line.template()
 			})
 			.join('')
@@ -61,12 +59,12 @@ export default class Slope_Chart {
 
 	template(){
 		this.createElements()
-		console.log(state)
-		return `<div class="${Styles.container}">
-			<div class="${Styles.lineContainer}">
+		let { width } = state.chartSettings
+		return `<div class="${Styles.container}" >
+			<div class="${Styles.lineContainer}" >
 				${this.renderLines()}
 			</div>
-			<div class="${Styles.dotContainer}">
+			<div class="${Styles.dotContainer}" >
 				${this.renderDots('left')}
 				${this.renderDots('right')}
 			</div>

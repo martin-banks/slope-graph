@@ -3,7 +3,9 @@
 	height: 20px;
 	background-color: lightblue;
 	border-radius: 100%;
+	border: solid 1px #000;
 	position: absolute;
 	top: 100%;
 	left: 0px;
+	shape-rendering: geometricPrecision;
 }

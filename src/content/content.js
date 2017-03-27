@@ -5,27 +5,27 @@ export let content = {
 		set1: {
 			label: 'Some label',
 			first: 50,
-			second: 200
+			second: 170
 		},
 		set2: {
 			label: 'Some label',
 			first: 100,
-			second: 150
+			second: 120
 		},
 		set3: {
 			label: 'Some label',
 			first: 150,
-			second: 100
+			second: 160
 		},
 		set4: {
 			label: 'Some label',
-			first: 200,
-			second: 50
+			first: 40,
+			second: 100
 		},
 		set5: {
 			label: 'Some label',
 			first: 250,
-			second: 0
+			second: 260
 		}
 	}
 	
