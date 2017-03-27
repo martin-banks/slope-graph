@@ -10,6 +10,37 @@ export default class Slope_Chart {
 		this.createElements = this.createElements.bind(this)
 		this.renderDots = this.renderDots.bind(this)
 		this.renderLines = this.renderLines.bind(this)
+		this.calcRange = this.calcRange.bind(this)
+		this.calcPosition = this.calcPosition.bind(this)
+		this.calcPositionX = this.calcPositionX.bind(this)
+
+		this.state = {}
+		this.calcRange()
+	}
+
+	calcRange(){
+		let {entries} = state.content
+		let leftValues = Object.keys(entries).map(key => entries[key].first)
+		let rightValues = Object.keys(entries).map(key => entries[key].second)
+		this.state.max = Math.max( ...leftValues, ...rightValues )
+		this.state.min = Math.min( ...leftValues, ...rightValues )
+		this.state.range = this.state.max - this.state.min
+	}
+
+	calcPosition(value){
+		/*console.log(
+			'\nvalue', value,
+			'\nrange', this.state.range,
+			'\nmax', this.state.max
+			)*/
+
+		let percent = (value / this.state.max) 
+		return state.chartSettings.height * percent
+	}
+
+	calcPositionX(value){
+		let { width, dotSize, inset } = state.chartSettings
+		return width - inset - dotSize
 	}
 
 	createElements(){
@@ -18,21 +49,27 @@ export default class Slope_Chart {
 
 		Object.keys(entries).map(key => {
 			let entry = entries[key]
+			let {first, second, label} = entry
+/*			console.log('calced', this.calcPosition(first))
+*/
 			entries[key].dot_left = new Dot({
 				valX: inset, 
-				valY: 0 - entry.first - inset, 
-				label: entry.label
-			});
+				valY: 0 - this.calcPosition(first) - dotSize, 
+				label: label
+			})
+
 			entries[key].dot_right = new Dot({
-				valX: width - inset - (dotSize), 
-				valY: 0 - entry.second - inset, 
-				label: entry.label
-			});
+				valX: this.calcPositionX(), 
+				valY: 0 - this.calcPosition(second) - dotSize, 
+				label: label,
+				status: first > second ? 'decrease' : 'increase'
+			})
+
 			entries[key].line = new Line({
-				x1: 0 + inset + (dotSize ),
-				x2: width - inset - dotSize,
-				y1: 0 - entry.first - inset + (dotSize / 2),
-				y2: 0 - entry.second - inset + (dotSize / 2)
+				x1: 0 + inset + dotSize,
+				x2: this.calcPositionX(),
+				y1: 0 - this.calcPosition(first) + (dotSize / 2) - dotSize,
+				y2: 0 - this.calcPosition(second) + (dotSize / 2) - dotSize
 			}) 
 		})
 	}
@@ -47,15 +84,12 @@ export default class Slope_Chart {
 	renderLines(){
 		let {entries} = state.content
 		return Object.keys(entries)
-			.map(key => {
-				return entries[key].line.template()
-			})
+			.map(key => entries[key].line.template() )
 			.join('')
 	}
 
 	
 
-	
 
 	template(){
 		this.createElements()

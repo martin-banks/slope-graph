@@ -8,4 +8,19 @@
 	top: 100%;
 	left: 0px;
 	shape-rendering: geometricPrecision;
+	z-index: 1
+}
+
+.dot:hover {
+	z-index: 2;
+}
+
+.default {
+	background-color: #fff;
+}
+.increase {
+	background-color: red;
+}
+.decrease {
+	background-color: green;
 }

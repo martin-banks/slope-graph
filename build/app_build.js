@@ -80,6 +80,7 @@ let state = {
 	chartSettings: {
 		inset: 50,
 		width: null,
+		height: 400,
 		dotSize: 20
 	}
 
@@ -319,6 +320,37 @@ class Slope_Chart {
 		this.createElements = this.createElements.bind(this);
 		this.renderDots = this.renderDots.bind(this);
 		this.renderLines = this.renderLines.bind(this);
+		this.calcRange = this.calcRange.bind(this);
+		this.calcPosition = this.calcPosition.bind(this);
+		this.calcPositionX = this.calcPositionX.bind(this);
+
+		this.state = {};
+		this.calcRange();
+	}
+
+	calcRange() {
+		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
+		let leftValues = Object.keys(entries).map(key => entries[key].first);
+		let rightValues = Object.keys(entries).map(key => entries[key].second);
+		this.state.max = Math.max(...leftValues, ...rightValues);
+		this.state.min = Math.min(...leftValues, ...rightValues);
+		this.state.range = this.state.max - this.state.min;
+	}
+
+	calcPosition(value) {
+		/*console.log(
+  	'\nvalue', value,
+  	'\nrange', this.state.range,
+  	'\nmax', this.state.max
+  	)*/
+
+		let percent = value / this.state.max;
+		return __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings.height * percent;
+	}
+
+	calcPositionX(value) {
+		let { width, dotSize, inset } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings;
+		return width - inset - dotSize;
 	}
 
 	createElements() {
@@ -327,21 +359,27 @@ class Slope_Chart {
 
 		Object.keys(entries).map(key => {
 			let entry = entries[key];
+			let { first, second, label } = entry;
+			/*			console.log('calced', this.calcPosition(first))
+   */
 			entries[key].dot_left = new __WEBPACK_IMPORTED_MODULE_2__dot_dot__["a" /* default */]({
 				valX: inset,
-				valY: 0 - entry.first - inset,
-				label: entry.label
+				valY: 0 - this.calcPosition(first) - dotSize,
+				label: label
 			});
+
 			entries[key].dot_right = new __WEBPACK_IMPORTED_MODULE_2__dot_dot__["a" /* default */]({
-				valX: width - inset - dotSize,
-				valY: 0 - entry.second - inset,
-				label: entry.label
+				valX: this.calcPositionX(),
+				valY: 0 - this.calcPosition(second) - dotSize,
+				label: label,
+				status: first > second ? 'decrease' : 'increase'
 			});
+
 			entries[key].line = new __WEBPACK_IMPORTED_MODULE_3__line_line__["a" /* default */]({
 				x1: 0 + inset + dotSize,
-				x2: width - inset - dotSize,
-				y1: 0 - entry.first - inset + dotSize / 2,
-				y2: 0 - entry.second - inset + dotSize / 2
+				x2: this.calcPositionX(),
+				y1: 0 - this.calcPosition(first) + dotSize / 2 - dotSize,
+				y2: 0 - this.calcPosition(second) + dotSize / 2 - dotSize
 			});
 		});
 	}
@@ -353,9 +391,7 @@ class Slope_Chart {
 
 	renderLines() {
 		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
-		return Object.keys(entries).map(key => {
-			return entries[key].line.template();
-		}).join('');
+		return Object.keys(entries).map(key => entries[key].line.template()).join('');
 	}
 
 	template() {
@@ -420,18 +456,18 @@ let content = {
 	entries: {
 		set1: {
 			label: 'Some label',
-			first: 50,
+			first: 200,
 			second: 170
 		},
 		set2: {
 			label: 'Some label',
 			first: 100,
-			second: 120
+			second: 80
 		},
 		set3: {
 			label: 'Some label',
-			first: 150,
-			second: 160
+			first: 120,
+			second: 110
 		},
 		set4: {
 			label: 'Some label',
@@ -440,8 +476,8 @@ let content = {
 		},
 		set5: {
 			label: 'Some label',
-			first: 250,
-			second: 260
+			first: 180,
+			second: 0
 		}
 	}
 
@@ -457,15 +493,16 @@ let content = {
 
 
 class Dot {
-	constructor({ valX = 0, valY = 0, label = '' } = {}) {
+	constructor({ valX = 0, valY = 0, label = '', status = 'default' } = {}) {
 		this.valX = valX;
 		this.valY = valY;
 		this.label = label;
+		this.status = status;
 	}
 
 	template() {
 		return `<div 
-			class="${__WEBPACK_IMPORTED_MODULE_0__dot_css___default.a.dot}"
+			class="${__WEBPACK_IMPORTED_MODULE_0__dot_css___default.a.dot} ${__WEBPACK_IMPORTED_MODULE_0__dot_css___default.a[this.status]}"
 			style="transform: translate3d(${this.valX}px, ${this.valY}px, 0)"
 		></div>`;
 	}
@@ -511,7 +548,7 @@ class Line {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"dot":"dot__dot___3IQ_J"};
+module.exports = {"dot":"dot__dot___3IQ_J","default":"dot__default___3Kkbu","increase":"dot__increase___1EUqM","decrease":"dot__decrease___3FpeY"};
 
 /***/ }),
 /* 9 */
@@ -525,7 +562,7 @@ module.exports = {"svgLineWrapper":"line__svgLineWrapper___1aXgA","svgLine":"lin
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"container":"slopeChart__container___czTU4","lineContainer":"slopeChart__lineContainer___3LePK"};
+module.exports = {"container":"slopeChart__container___czTU4","lineContainer":"slopeChart__lineContainer___3LePK","dotContainer":"slopeChart__dotContainer___9JGJB"};
 
 /***/ })
 /******/ ]);

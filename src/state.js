@@ -5,6 +5,7 @@ export let state = {
 	chartSettings: {
 		inset: 50,
 		width: null,
+		height: 400,
 		dotSize: 20
 	}
 	

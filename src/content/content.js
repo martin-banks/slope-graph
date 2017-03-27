@@ -4,18 +4,18 @@ export let content = {
 	entries: {
 		set1: {
 			label: 'Some label',
-			first: 50,
+			first: 200,
 			second: 170
 		},
 		set2: {
 			label: 'Some label',
 			first: 100,
-			second: 120
+			second: 80
 		},
 		set3: {
 			label: 'Some label',
-			first: 150,
-			second: 160
+			first: 120,
+			second: 110
 		},
 		set4: {
 			label: 'Some label',
@@ -24,8 +24,8 @@ export let content = {
 		},
 		set5: {
 			label: 'Some label',
-			first: 250,
-			second: 260
+			first: 180,
+			second: 0
 		}
 	}
 	
