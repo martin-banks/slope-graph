@@ -2,6 +2,7 @@ import {state} from '../../state'
 import Styles from './slopeChart.css'
 import Dot from '../dot/dot'
 import Line from '../line/line'
+import Axis from '../axis/axis'
 
 
 export default class Slope_Chart {
@@ -50,8 +51,7 @@ export default class Slope_Chart {
 		Object.keys(entries).map(key => {
 			let entry = entries[key]
 			let {first, second, label} = entry
-/*			console.log('calced', this.calcPosition(first))
-*/
+
 			entries[key].dot_left = new Dot({
 				valX: inset, 
 				valY: 0 - this.calcPosition(first) - dotSize, 
@@ -71,6 +71,12 @@ export default class Slope_Chart {
 				y1: 0 - this.calcPosition(first) + (dotSize / 2) - dotSize,
 				y2: 0 - this.calcPosition(second) + (dotSize / 2) - dotSize
 			}) 
+
+		})
+		this.state.axis = new Axis({
+			min: this.state.min,
+			max: this.state.max,
+			width: this.props.chartWidth
 		})
 	}
 
@@ -88,6 +94,10 @@ export default class Slope_Chart {
 			.join('')
 	}
 
+
+
+	
+
 	
 
 
@@ -95,9 +105,15 @@ export default class Slope_Chart {
 		this.createElements()
 		let { width } = state.chartSettings
 		return `<div class="${Styles.container}" >
+			
+			<div class="${Styles.axisContainer}">
+				${this.state.axis.template()}
+			</div>
+			
 			<div class="${Styles.lineContainer}" >
 				${this.renderLines()}
 			</div>
+			
 			<div class="${Styles.dotContainer}" >
 				${this.renderDots('left')}
 				${this.renderDots('right')}

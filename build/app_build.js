@@ -309,6 +309,8 @@ const addEvent = function (object, type, callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__slopeChart_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dot_dot__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__line_line__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__axis_axis__ = __webpack_require__(11);
+
 
 
 
@@ -360,8 +362,7 @@ class Slope_Chart {
 		Object.keys(entries).map(key => {
 			let entry = entries[key];
 			let { first, second, label } = entry;
-			/*			console.log('calced', this.calcPosition(first))
-   */
+
 			entries[key].dot_left = new __WEBPACK_IMPORTED_MODULE_2__dot_dot__["a" /* default */]({
 				valX: inset,
 				valY: 0 - this.calcPosition(first) - dotSize,
@@ -382,6 +383,11 @@ class Slope_Chart {
 				y2: 0 - this.calcPosition(second) + dotSize / 2 - dotSize
 			});
 		});
+		this.state.axis = new __WEBPACK_IMPORTED_MODULE_4__axis_axis__["a" /* default */]({
+			min: this.state.min,
+			max: this.state.max,
+			width: this.props.chartWidth
+		});
 	}
 
 	renderDots(side) {
@@ -398,9 +404,15 @@ class Slope_Chart {
 		this.createElements();
 		let { width } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings;
 		return `<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.container}" >
+			
+			<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.axisContainer}">
+				${this.state.axis.template()}
+			</div>
+			
 			<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.lineContainer}" >
 				${this.renderLines()}
 			</div>
+			
 			<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.dotContainer}" >
 				${this.renderDots('left')}
 				${this.renderDots('right')}
@@ -440,7 +452,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __WEBPACK_IMPORTED_MODULE_1__state__["a" /* state */].chartSettings.width = document.querySelector('#appContainer').getBoundingClientRect().width;
 const isMobile = __WEBPACK_IMPORTED_MODULE_2__functions_utility__["a" /* isMobileDevice */](); // true or false
 
-const slopeChart = new __WEBPACK_IMPORTED_MODULE_3__templates_slopeChart_slopeChart__["a" /* default */]();
+const slopeChart = new __WEBPACK_IMPORTED_MODULE_3__templates_slopeChart_slopeChart__["a" /* default */]({ chartWidth: __WEBPACK_IMPORTED_MODULE_1__state__["a" /* state */].chartSettings.width });
 
 document.querySelector('#appContainer').innerHTML = slopeChart.template();
 
@@ -562,7 +574,87 @@ module.exports = {"svgLineWrapper":"line__svgLineWrapper___1aXgA","svgLine":"lin
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"container":"slopeChart__container___czTU4","lineContainer":"slopeChart__lineContainer___3LePK","dotContainer":"slopeChart__dotContainer___9JGJB"};
+module.exports = {"container":"slopeChart__container___czTU4","lineContainer":"slopeChart__lineContainer___3LePK","dotContainer":"slopeChart__dotContainer___9JGJB","axisContainer":"slopeChart__axisContainer___3zkSZ"};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__axis_css__);
+
+
+class Axis {
+    constructor({
+        min = 0,
+        max = 100,
+        width = 0,
+        count = 5
+    } = {}) {
+        this.width = width;
+        this.min = min;
+        this.max = max;
+        this.range = this.max - this.min;
+        this.count = count;
+        this.state = {
+            ticks: []
+        };
+
+        this.renderTicks = this.renderTicks.bind(this);
+    }
+
+    renderTicks() {
+        let interval = this.range / this.count; //returns percentage interval
+        console.log(this.range, interval);
+        let calcPos = val => (val + this.min) / this.max * 100;
+        for (let i = 0; i < this.count; i++) {
+
+            this.state.ticks.push(`
+                <line class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.gridLine}"
+                    x1="0" y1="${i * interval}"
+                    x2="500" y2="${i * interval}"
+                />
+           
+                <line class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.tick}"
+                    x1="10" y1="${i * interval}"
+                    x2="20" y2="${i * interval}"
+                />
+           
+                <text class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.tickLabel}" 
+                    x="0" y="${0 - (i * interval + interval)}" >
+                        ${i * interval + interval}
+                </text>
+            `);
+            console.log(this.state);
+        }
+        console.log(this.state);
+        return this.state.ticks.join('');
+    }
+
+    template() {
+        return `<svg>
+            <line 
+                class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.axis}"
+                x1="20px" y1="0px"
+                x2="20px" y2="400px"
+            />
+            ${this.renderTicks()}
+        </svg>
+        
+        `;
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Axis;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"gridLine":"axis__gridLine___2vbDU","tick":"axis__tick___1k4_3","tickLabel":"axis__tickLabel___25kT2","axis":"axis__axis___12WE5"};
 
 /***/ })
 /******/ ]);
