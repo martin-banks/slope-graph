@@ -1,0 +1,29 @@
+.gridLine {
+  position: absolute;
+  fill: red;
+  stroke-width: 8px;
+}
+
+.tick {
+  position: absolute;
+  fill: blue;
+  stroke-width: 4px;
+}
+
+.tickLabel {
+  position: absolute;
+  font-family: 'Arial', sans-serif;
+  fill: #666;
+  font-size: 16px;
+  stroke-width: 1px;
+  text-align: right;
+}
+
+.axis {
+  position: absolute;
+  fill: #000;
+}
+
+svg {
+  overflow: visible
+}
