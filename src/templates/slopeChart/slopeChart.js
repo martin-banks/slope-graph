@@ -47,22 +47,22 @@ export default class SlopeChart {
 			let entry = entries[key]
 			let { first, second, label } = entry
 
-			entries[key].dot_left = new Dot({
-				valX: inset,
+			entries[key].dotleft = new Dot({
+				valX: inset + dotSize,
 				valY: calcPosition({ value: first, max: this.state.max }) - dotSize,
 				label,
 			})
 
-			entries[key].dot_right = new Dot({
-				valX: SlopeChart.calcPositionX(),
+			entries[key].dotright = new Dot({
+				valX: SlopeChart.calcPositionX() + (dotSize * 0.5),
 				valY: calcPosition({ value: second, max: this.state.max }) - dotSize,
 				label,
 				status: first > second ? 'decrease' : 'increase',
 			})
 
 			entries[key].line = new Line({
-				x1: 0 + inset + dotSize,
-				x2: SlopeChart.calcPositionX(),
+				x1: inset + (dotSize * 1.5),
+				x2: SlopeChart.calcPositionX() + dotSize,
 				y1: (calcPosition({ value: first, max: this.state.max }) + (dotSize / 2)) - dotSize,
 				y2: (calcPosition({ value: second, max: this.state.max }) + (dotSize / 2)) - dotSize,
 			})
@@ -78,15 +78,20 @@ export default class SlopeChart {
 	static renderDots(side) {
 		let { entries } = state.content
 		return Object.keys(entries)
-			.map(key => entries[key][`dot_${side}`].template())
+			.map(key => entries[key][`dot${side}`].template())
 			.join('')
 	}
 
 	static renderLines() {
 		let { entries } = state.content
 		return Object.keys(entries)
-			.map(key => entries[key].line.template())
-			.join('')
+			.map(key => `
+				<div class="${Styles.entryWrapper}" data-hover="false">
+					${entries[key].line.template()}
+					${entries[key].dotleft.template()}
+					${entries[key].dotright.template()}
+				</div>
+			`).join('')
 	}
 
 
@@ -105,10 +110,6 @@ export default class SlopeChart {
 				${SlopeChart.renderLines()}
 			</div>
 			
-			<div class="${Styles.dotContainer}" >
-				${SlopeChart.renderDots('left')}
-				${SlopeChart.renderDots('right')}
-			</div>
 		</div>`
 	}
 

@@ -2,14 +2,15 @@ import content from './content/content'
 
 const maxHeight = 400
 const windowHeight = () => window.innerHeight
-const setHeight = () => {
-	if (windowHeight() > maxHeight) {
-		return maxHeight
-	}
-	return windowHeight()
-}
+// const setHeight = () => {
+// 	if (windowHeight() > maxHeight) {
+// 		return maxHeight
+// 	}
+// 	return windowHeight()
+// }
 
 const state = {
+	willResize: false,
 	content,
 	chartSettings: {
 		inset: 50,

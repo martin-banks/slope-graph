@@ -5,19 +5,23 @@
 	width: 100%;
 	/*height: 450px;*/
 	margin-top: 0px;
-	
 	/*background-color: #e2e2e2;*/
 	box-sizing: border-box;
 	/*border: solid 2px lime;*/
 	padding: 0 16px;
-	margin: 32px 0;
+	margin-bottom: 40px;
+}
+
+.entryWrapper {
 }
 
 .lineContainer {
 	position: absolute;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
+	overflow: hidden;
 	/*background-color: rgba(0,255,0,0.3);*/
 }
 

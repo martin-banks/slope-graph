@@ -8,11 +8,15 @@
 	top: 100%;
 	left: 0px;
 	shape-rendering: geometricPrecision;
-	z-index: 1
+	z-index: 9;
+	box-sizing: border-box;
 }
 
-.dot:hover {
-	z-index: 2;
+[data-hover="true"] .dot {
+	/*transform: scale(2);*/
+	/*transform-origin: 50% 50% 0;*/
+	border: solid 4px #000;
+	z-index: 10
 }
 
 .default {
