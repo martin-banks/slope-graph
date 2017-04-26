@@ -1,13 +1,16 @@
-.gridLine {
+.line {
   position: absolute;
-  fill: red;
-  stroke-width: 8px;
+  stroke: rgba(0,0,0,0.1);
+  stroke-width: 2px;
+  z-index: 0;
+}
+
+.gridLine {
+  composes: line;
 }
 
 .tick {
-  position: absolute;
-  fill: blue;
-  stroke-width: 4px;
+  composes: line;
 }
 
 .tickLabel {
@@ -17,6 +20,7 @@
   font-size: 16px;
   stroke-width: 1px;
   text-align: right;
+  transform: translateY(8px);
 }
 
 .axis {

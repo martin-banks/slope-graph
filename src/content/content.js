@@ -9,12 +9,12 @@ const content = {
 		},
 		set2: {
 			label: 'Some label',
-			first: 100,
+			first: 95,
 			second: 80,
 		},
 		set3: {
 			label: 'Some label',
-			first: 120,
+			first: 125,
 			second: 110,
 		},
 		set4: {
@@ -25,7 +25,7 @@ const content = {
 		set5: {
 			label: 'Some label',
 			first: 180,
-			second: 0,
+			second: 3,
 		},
 
 	},
