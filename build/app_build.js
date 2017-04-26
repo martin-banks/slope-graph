@@ -240,7 +240,7 @@ const isMobileDevice = () => {
 	const mobile = /iPad|Android|webOS|iPhone|iPod|Blackberry/.test(navigator.userAgent) && !window.MSStream;
 	return mobile ? true : false;
 };
-/* harmony export (immutable) */ __webpack_exports__["a"] = isMobileDevice;
+/* unused harmony export isMobileDevice */
 
 
 const isIOSDevice = () => {
@@ -305,26 +305,26 @@ const addEvent = function (object, type, callback) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__slopeChart_css__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__slopeChart_css__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__slopeChart_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dot_dot__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__line_line__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__axis_axis__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dot_dot__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__line_line__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__axis_axis__ = __webpack_require__(6);
 
 
 
 
 
 
-class Slope_Chart {
+class SlopeChart {
 	constructor(props) {
 		this.props = props;
 		this.createElements = this.createElements.bind(this);
-		this.renderDots = this.renderDots.bind(this);
-		this.renderLines = this.renderLines.bind(this);
+		// this.renderDots = this.renderDots.bind(this)
+		// this.renderLines = this.renderLines.bind(this)
 		this.calcRange = this.calcRange.bind(this);
 		this.calcPosition = this.calcPosition.bind(this);
-		this.calcPositionX = this.calcPositionX.bind(this);
+		// this.calcPositionX = this.calcPositionX.bind(this)
 
 		this.state = {};
 		this.calcRange();
@@ -340,49 +340,50 @@ class Slope_Chart {
 	}
 
 	calcPosition(value) {
-		/*console.log(
+		/* console.log(
   	'\nvalue', value,
   	'\nrange', this.state.range,
   	'\nmax', this.state.max
-  	)*/
+  	) */
 
 		let percent = value / this.state.max;
 		return __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings.height * percent;
 	}
 
-	calcPositionX(value) {
+	static calcPositionX() {
 		let { width, dotSize, inset } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings;
 		return width - inset - dotSize;
 	}
 
 	createElements() {
 		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
-		let { inset, width, dotSize } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings;
+		let { inset, dotSize } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings;
 
-		Object.keys(entries).map(key => {
+		Object.keys(entries).forEach(key => {
 			let entry = entries[key];
 			let { first, second, label } = entry;
 
 			entries[key].dot_left = new __WEBPACK_IMPORTED_MODULE_2__dot_dot__["a" /* default */]({
 				valX: inset,
 				valY: 0 - this.calcPosition(first) - dotSize,
-				label: label
+				label
 			});
 
 			entries[key].dot_right = new __WEBPACK_IMPORTED_MODULE_2__dot_dot__["a" /* default */]({
-				valX: this.calcPositionX(),
+				valX: SlopeChart.calcPositionX(),
 				valY: 0 - this.calcPosition(second) - dotSize,
-				label: label,
+				label,
 				status: first > second ? 'decrease' : 'increase'
 			});
 
 			entries[key].line = new __WEBPACK_IMPORTED_MODULE_3__line_line__["a" /* default */]({
 				x1: 0 + inset + dotSize,
-				x2: this.calcPositionX(),
+				x2: SlopeChart.calcPositionX(),
 				y1: 0 - this.calcPosition(first) + dotSize / 2 - dotSize,
 				y2: 0 - this.calcPosition(second) + dotSize / 2 - dotSize
 			});
 		});
+
 		this.state.axis = new __WEBPACK_IMPORTED_MODULE_4__axis_axis__["a" /* default */]({
 			min: this.state.min,
 			max: this.state.max,
@@ -390,19 +391,19 @@ class Slope_Chart {
 		});
 	}
 
-	renderDots(side) {
+	static renderDots(side) {
 		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
 		return Object.keys(entries).map(key => entries[key][`dot_${side}`].template()).join('');
 	}
 
-	renderLines() {
+	static renderLines() {
 		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
 		return Object.keys(entries).map(key => entries[key].line.template()).join('');
 	}
 
 	template() {
 		this.createElements();
-		let { width } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings;
+		// let { width } = state.chartSettings
 		return `<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.container}" >
 			
 			<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.axisContainer}">
@@ -410,18 +411,18 @@ class Slope_Chart {
 			</div>
 			
 			<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.lineContainer}" >
-				${this.renderLines()}
+				${SlopeChart.renderLines()}
 			</div>
 			
 			<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.dotContainer}" >
-				${this.renderDots('left')}
-				${this.renderDots('right')}
+				${SlopeChart.renderDots('left')}
+				${SlopeChart.renderDots('right')}
 			</div>
 		</div>`;
 	}
 
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Slope_Chart;
+/* harmony export (immutable) */ __webpack_exports__["a"] = SlopeChart;
 
 
 /***/ }),
@@ -447,11 +448,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-
 __WEBPACK_IMPORTED_MODULE_1__state__["a" /* state */].chartSettings.width = document.querySelector('#appContainer').getBoundingClientRect().width;
-const isMobile = __WEBPACK_IMPORTED_MODULE_2__functions_utility__["a" /* isMobileDevice */](); // true or false
 
+// const isMobile = util.isMobileDevice() // true or false
 const slopeChart = new __WEBPACK_IMPORTED_MODULE_3__templates_slopeChart_slopeChart__["a" /* default */]({ chartWidth: __WEBPACK_IMPORTED_MODULE_1__state__["a" /* state */].chartSettings.width });
 
 document.querySelector('#appContainer').innerHTML = slopeChart.template();
@@ -500,88 +499,7 @@ let content = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dot_css__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dot_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__dot_css__);
-
-
-class Dot {
-	constructor({ valX = 0, valY = 0, label = '', status = 'default' } = {}) {
-		this.valX = valX;
-		this.valY = valY;
-		this.label = label;
-		this.status = status;
-	}
-
-	template() {
-		return `<div 
-			class="${__WEBPACK_IMPORTED_MODULE_0__dot_css___default.a.dot} ${__WEBPACK_IMPORTED_MODULE_0__dot_css___default.a[this.status]}"
-			style="transform: translate3d(${this.valX}px, ${this.valY}px, 0)"
-		></div>`;
-	}
-
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Dot;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__line_css__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__line_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__line_css__);
-
-
-class Line {
-	constructor({ x1 = 0, x2 = 0, y1 = 0, y2 = 0 } = {}) {
-		this.x1 = x1;
-		this.x2 = x2;
-		this.y1 = y1;
-		this.y2 = y2;
-	}
-
-	template() {
-		console.log(`x1="${this.x1}" y1="${this.y1}" x2="${this.x2}" y2="${this.y2}" `);
-		return `
-			<svg class="${__WEBPACK_IMPORTED_MODULE_0__line_css___default.a.svgLineWrapper}">
-				<line class="${__WEBPACK_IMPORTED_MODULE_0__line_css___default.a.svgLine}"
-					x1="${this.x1}" y1="${this.y1}" 
-					x2="${this.x2}" y2="${this.y2}" 
-				/>
-			</svg>
-		`;
-	}
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Line;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"dot":"dot__dot___3IQ_J","default":"dot__default___3Kkbu","increase":"dot__increase___1EUqM","decrease":"dot__decrease___3FpeY"};
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"svgLineWrapper":"line__svgLineWrapper___1aXgA","svgLine":"line__svgLine___2YZTo"};
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"container":"slopeChart__container___czTU4","lineContainer":"slopeChart__lineContainer___3LePK","dotContainer":"slopeChart__dotContainer___9JGJB","axisContainer":"slopeChart__axisContainer___3zkSZ"};
-
-/***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__axis_css__);
 
 
@@ -650,11 +568,92 @@ class Axis {
 
 
 /***/ }),
-/* 12 */
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dot_css__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dot_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__dot_css__);
+
+
+class Dot {
+	constructor({ valX = 0, valY = 0, label = '', status = 'default' } = {}) {
+		this.valX = valX;
+		this.valY = valY;
+		this.label = label;
+		this.status = status;
+	}
+
+	template() {
+		return `<div 
+			class="${__WEBPACK_IMPORTED_MODULE_0__dot_css___default.a.dot} ${__WEBPACK_IMPORTED_MODULE_0__dot_css___default.a[this.status]}"
+			style="transform: translate3d(${this.valX}px, ${this.valY}px, 0)"
+		></div>`;
+	}
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Dot;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__line_css__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__line_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__line_css__);
+
+
+class Line {
+	constructor({ x1 = 0, x2 = 0, y1 = 0, y2 = 0 } = {}) {
+		this.x1 = x1;
+		this.x2 = x2;
+		this.y1 = y1;
+		this.y2 = y2;
+	}
+
+	template() {
+		console.log(`x1="${this.x1}" y1="${this.y1}" x2="${this.x2}" y2="${this.y2}" `);
+		return `
+			<svg class="${__WEBPACK_IMPORTED_MODULE_0__line_css___default.a.svgLineWrapper}">
+				<line class="${__WEBPACK_IMPORTED_MODULE_0__line_css___default.a.svgLine}"
+					x1="${this.x1}" y1="${this.y1}" 
+					x2="${this.x2}" y2="${this.y2}" 
+				/>
+			</svg>
+		`;
+	}
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Line;
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"gridLine":"axis__gridLine___2vbDU","tick":"axis__tick___1k4_3","tickLabel":"axis__tickLabel___25kT2","axis":"axis__axis___12WE5"};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"dot":"dot__dot___3IQ_J","default":"dot__default___3Kkbu","increase":"dot__increase___1EUqM","decrease":"dot__decrease___3FpeY"};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"svgLineWrapper":"line__svgLineWrapper___1aXgA","svgLine":"line__svgLine___2YZTo"};
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"container":"slopeChart__container___czTU4","lineContainer":"slopeChart__lineContainer___3LePK","dotContainer":"slopeChart__dotContainer___9JGJB","axisContainer":"slopeChart__axisContainer___3zkSZ"};
 
 /***/ })
 /******/ ]);
