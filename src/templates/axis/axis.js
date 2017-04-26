@@ -1,4 +1,3 @@
-/* eslint no-console:0 */
 import Styles from './axis.css'
 import calcPosition from '../../functions/calcVertPosition'
 import state from '../../state'
@@ -25,9 +24,7 @@ export default class Axis {
 	}
 
 	renderTicks() {
-		// let interval = this.range / this.count // returns percentage interval
 		const { width, inset } = state.chartSettings
-		// console.log(this.range, this.interval)
 		for (let i = 0; i < this.count + 1; i++) {
 			const value = ((i * this.interval)/* + this.interval*/)
 			const ypos = calcPosition({ value, max: this.max })
@@ -41,11 +38,7 @@ export default class Axis {
 						${value}
 				</text>
 			`)
-
-			// console.log(this.state)
 		}
-
-		// console.log(this.state)
 		return this.state.ticks.join('')
 	}
 

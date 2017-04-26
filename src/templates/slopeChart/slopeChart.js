@@ -10,12 +10,7 @@ export default class SlopeChart {
 	constructor(props) {
 		this.props = props
 		this.createElements = this.createElements.bind(this)
-		// this.renderDots = this.renderDots.bind(this)
-		// this.renderLines = this.renderLines.bind(this)
 		this.calcRange = this.calcRange.bind(this)
-		// this.calcPosition = this.calcPosition.bind(this)
-		// this.calcPositionX = this.calcPositionX.bind(this)
-
 		this.state = {}
 		this.calcRange()
 	}
@@ -28,11 +23,6 @@ export default class SlopeChart {
 		this.state.min = Math.min(...leftValues, ...rightValues)
 		this.state.range = this.state.max - this.state.min
 	}
-
-	// calcPosition({ value: value, max: this.state.max }) {
-	// 	let percent = (value / this.state.max)
-	// 	return 0 - (state.chartSettings.height * percent)
-	// }
 
 	static calcPositionX() {
 		let { width, dotSize, inset } = state.chartSettings

@@ -33,23 +33,8 @@ function addResize() {
 	state.willResize = true
 }
 
-// function handleHoverIn(e) {
-// 	console.log('hover!!', e)
-// 	const wrapper = closest(e.target, `.${slopeStyles.entryWrapper}`)
-// 	console.log(wrapper)
-// 	wrapper.setAttribute('data-hover', 'true')
-// }
-
-// function handleHoverOut(e) {
-// 	console.log('hover!!', e)
-// 	const wrapper = closest(e.target, `.${slopeStyles.entryWrapper}`)
-// 	console.log(wrapper)
-// 	wrapper.setAttribute('data-hover', 'false')
-// }
-
 function startChart() {
 	renderChart()
-	// console.log(`.${dotStyles.dot}`)
 	delegate('#appContainer', 'mouseover', `.${dotStyles.dot}, .${lineStyle.svgLine}`, handleHover)
 	delegate('#appContainer', 'mouseout', `.${dotStyles.dot}, .${lineStyle.svgLine}`, handleHover)
 	if (!state.willResize) addResize()

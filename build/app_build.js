@@ -76,12 +76,6 @@
 
 const maxHeight = 400;
 const windowHeight = () => window.innerHeight;
-// const setHeight = () => {
-// 	if (windowHeight() > maxHeight) {
-// 		return maxHeight
-// 	}
-// 	return windowHeight()
-// }
 
 const state = {
 	willResize: false,
@@ -336,12 +330,7 @@ class SlopeChart {
 	constructor(props) {
 		this.props = props;
 		this.createElements = this.createElements.bind(this);
-		// this.renderDots = this.renderDots.bind(this)
-		// this.renderLines = this.renderLines.bind(this)
 		this.calcRange = this.calcRange.bind(this);
-		// this.calcPosition = this.calcPosition.bind(this)
-		// this.calcPositionX = this.calcPositionX.bind(this)
-
 		this.state = {};
 		this.calcRange();
 	}
@@ -354,11 +343,6 @@ class SlopeChart {
 		this.state.min = Math.min(...leftValues, ...rightValues);
 		this.state.range = this.state.max - this.state.min;
 	}
-
-	// calcPosition({ value: value, max: this.state.max }) {
-	// 	let percent = (value / this.state.max)
-	// 	return 0 - (state.chartSettings.height * percent)
-	// }
 
 	static calcPositionX() {
 		let { width, dotSize, inset } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings;
@@ -488,23 +472,8 @@ function addResize() {
 	__WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].willResize = true;
 }
 
-// function handleHoverIn(e) {
-// 	console.log('hover!!', e)
-// 	const wrapper = closest(e.target, `.${slopeStyles.entryWrapper}`)
-// 	console.log(wrapper)
-// 	wrapper.setAttribute('data-hover', 'true')
-// }
-
-// function handleHoverOut(e) {
-// 	console.log('hover!!', e)
-// 	const wrapper = closest(e.target, `.${slopeStyles.entryWrapper}`)
-// 	console.log(wrapper)
-// 	wrapper.setAttribute('data-hover', 'false')
-// }
-
 function startChart() {
 	renderChart();
-	// console.log(`.${dotStyles.dot}`)
 	delegate('#appContainer', 'mouseover', `.${__WEBPACK_IMPORTED_MODULE_6__templates_dot_dot_css___default.a.dot}, .${__WEBPACK_IMPORTED_MODULE_7__templates_line_line_css___default.a.svgLine}`, __WEBPACK_IMPORTED_MODULE_2__functions_onHover__["a" /* default */]);
 	delegate('#appContainer', 'mouseout', `.${__WEBPACK_IMPORTED_MODULE_6__templates_dot_dot_css___default.a.dot}, .${__WEBPACK_IMPORTED_MODULE_7__templates_line_line_css___default.a.svgLine}`, __WEBPACK_IMPORTED_MODULE_2__functions_onHover__["a" /* default */]);
 	if (!__WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].willResize) addResize();
@@ -565,7 +534,6 @@ const content = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__axis_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__functions_calcVertPosition__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state__ = __webpack_require__(0);
-/* eslint no-console:0 */
 
 
 
@@ -592,9 +560,7 @@ class Axis {
 	}
 
 	renderTicks() {
-		// let interval = this.range / this.count // returns percentage interval
 		const { width, inset } = __WEBPACK_IMPORTED_MODULE_2__state__["a" /* default */].chartSettings;
-		// console.log(this.range, this.interval)
 		for (let i = 0; i < this.count + 1; i++) {
 			const value = i * this.interval;
 			const ypos = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__functions_calcVertPosition__["a" /* default */])({ value, max: this.max });
@@ -608,11 +574,7 @@ class Axis {
 						${value}
 				</text>
 			`);
-
-			// console.log(this.state)
 		}
-
-		// console.log(this.state)
 		return this.state.ticks.join('');
 	}
 
@@ -675,23 +637,15 @@ class Line {
 		this.x2 = x2;
 		this.y1 = y1;
 		this.y2 = y2;
-		// this.toggleHover = this.toggleHover.bind(this)
 	}
 
-	/*toggleHover(e) {
- 	console.log('hover!', e)
- 	// e.target.setAttribute('data-hover', 'true')
- }*/
-
 	template() {
-		// console.log(`x1="${this.x1}" y1="${this.y1}" x2="${this.x2}" y2="${this.y2}" `)
 		return `
 			<svg class="${__WEBPACK_IMPORTED_MODULE_0__line_css___default.a.svgLineWrapper}">
 				<line class="${__WEBPACK_IMPORTED_MODULE_0__line_css___default.a.svgLine}"
 					x1="${this.x1}" y1="${this.y1}" 
 					x2="${this.x2}" y2="${this.y2}" 
-					data-hover='false'
-					
+					data-hover='false'	
 				/>
 			</svg>
 		`;

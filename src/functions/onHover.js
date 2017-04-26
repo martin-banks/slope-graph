@@ -7,5 +7,4 @@ function handleHover(e) {
 	wrapper.setAttribute('data-hover', newVal)
 }
 
-
 export default handleHover

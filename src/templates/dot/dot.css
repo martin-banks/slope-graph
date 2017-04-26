@@ -13,9 +13,7 @@
 }
 
 [data-hover="true"] .dot {
-	/*transform: scale(2);*/
-	/*transform-origin: 50% 50% 0;*/
-	border: solid 4px #000;
+	border: solid 2px #000;
 	z-index: 10
 }
 
