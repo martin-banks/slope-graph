@@ -4,10 +4,19 @@
 	width:100%;
 	top: 100%;
 	overflow: visible;
+	z-index: 99
 }
 
-.svgLine {
-	stroke: rgba(0,0,0, 0.6);
-	stroke-width: 2;
+svg .svgLine {
+	stroke: rgba(0,0,0, 0.4);
+	stroke-width: 4;
 	shape-rendering: geometricPrecision;
+	z-index: 10
+}
+
+
+
+svg:hover .svgLine {
+	stroke: lime;
+	stroke-width: 8;
 }

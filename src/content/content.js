@@ -1,5 +1,8 @@
 const content = {
-	title: 'test title',
+	chartTitle: {
+		title: 'Chart title',
+		intro: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta nisi iusto maxime.',
+	},
 
 	entries: {
 		set1: {

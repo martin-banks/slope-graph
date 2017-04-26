@@ -2,3 +2,12 @@
 .common {
 	composes: reset from './boilerplate.css';
 }
+
+#appContainer {
+	display: block;
+	position: relative;
+	overflow: auto;
+	margin: 32px 16px;
+	box-sizing: border-box;
+	border: solid 2px lime; 
+}

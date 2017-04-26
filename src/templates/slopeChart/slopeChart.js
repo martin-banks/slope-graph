@@ -92,8 +92,10 @@ export default class SlopeChart {
 
 	template() {
 		this.createElements()
-		// let { width } = state.chartSettings
-		return `<div class="${Styles.container}" >
+		let { height, inset } = state.chartSettings
+		return `<div 
+			class="${Styles.container}" 
+			style="height: ${height + inset}px" >
 			
 			<div class="${Styles.axisContainer}">
 				${this.state.axis.template()}

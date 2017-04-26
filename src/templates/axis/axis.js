@@ -1,6 +1,7 @@
 /* eslint no-console:0 */
 import Styles from './axis.css'
 import calcPosition from '../../functions/calcVertPosition'
+import state from '../../state'
 
 export default class Axis {
 	constructor({
@@ -25,26 +26,26 @@ export default class Axis {
 
 	renderTicks() {
 		// let interval = this.range / this.count // returns percentage interval
-		console.log(this.range, this.interval)
-		for (let i = 0; i < this.count; i++) {
-			const value = ((i * this.interval) + this.interval)
+		const { width, inset } = state.chartSettings
+		// console.log(this.range, this.interval)
+		for (let i = 0; i < this.count + 1; i++) {
+			const value = ((i * this.interval)/* + this.interval*/)
 			const ypos = calcPosition({ value, max: this.max })
 			this.state.ticks.push(`
 				<line class="${Styles.gridLine}"
-					x1="40" y1="${ypos}"
-					x2="500" y2="${ypos}"
+					x1="${inset}" y1="${ypos}"
+					x2="${width - inset}" y2="${ypos}"
 				/>
-				
 				<text class="${Styles.tickLabel}" 
 					x="0" y="${ypos}" >
-						${(i * this.interval) + this.interval}
+						${value}
 				</text>
 			`)
 
-			console.log(this.state)
+			// console.log(this.state)
 		}
 
-		console.log(this.state)
+		// console.log(this.state)
 		return this.state.ticks.join('')
 	}
 

@@ -74,12 +74,23 @@
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__content_content__ = __webpack_require__(5);
 
 
+const maxHeight = 400;
+const windowHeight = () => window.innerHeight;
+const setHeight = () => {
+	if (windowHeight() > maxHeight) {
+		return maxHeight;
+	}
+	return windowHeight();
+};
+
 const state = {
 	content: __WEBPACK_IMPORTED_MODULE_0__content_content__["a" /* default */],
 	chartSettings: {
 		inset: 50,
-		width: null,
-		height: 400,
+		setWidth: () => document.querySelector('#appContainer').getBoundingClientRect().width,
+		setHeight: () => windowHeight() > maxHeight ? maxHeight : windowHeight(),
+		width: 0,
+		height: 0,
 		dotSize: 20
 	}
 
@@ -188,8 +199,10 @@ class SlopeChart {
 
 	template() {
 		this.createElements();
-		// let { width } = state.chartSettings
-		return `<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.container}" >
+		let { height, inset } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings;
+		return `<div 
+			class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.container}" 
+			style="height: ${height + inset}px" >
 			
 			<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.axisContainer}">
 				${this.state.axis.template()}
@@ -218,18 +231,39 @@ class SlopeChart {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__templates_slopeChart_slopeChart__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__functions_debounce__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__templates_slopeChart_slopeChart__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__templates_titleBlock_titleblock__ = __webpack_require__(15);
 // import styles from './app.css'
 
 // import * as util from './functions/utility'
 
 
-__WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings.width = document.querySelector('#appContainer').getBoundingClientRect().width;
 
-// const isMobile = util.isMobileDevice() // true or false
-const slopeChart = new __WEBPACK_IMPORTED_MODULE_1__templates_slopeChart_slopeChart__["a" /* default */]({ chartWidth: __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings.width });
 
-document.querySelector('#appContainer').innerHTML = slopeChart.template();
+// const { isMobileDevice } = util // true or false
+const slopeChart = new __WEBPACK_IMPORTED_MODULE_2__templates_slopeChart_slopeChart__["a" /* default */]({ chartWidth: __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings.width });
+const titleBlock = new __WEBPACK_IMPORTED_MODULE_3__templates_titleBlock_titleblock__["a" /* default */]();
+
+function renderChart() {
+	const { setWidth, setHeight } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings;
+	__WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings.width = setWidth();
+	__WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings.height = setHeight();
+
+	document.querySelector('#appContainer').innerHTML = [titleBlock.render(), slopeChart.template()].join('');
+}
+
+function addResize() {
+	window.addEventListener('resize', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__functions_debounce__["a" /* default */])(renderChart));
+	__WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].willResize = true;
+}
+
+function startChart() {
+	renderChart();
+	if (!__WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].willResize) addResize();
+}
+
+startChart();
 
 /***/ }),
 /* 5 */
@@ -237,7 +271,10 @@ document.querySelector('#appContainer').innerHTML = slopeChart.template();
 
 "use strict";
 const content = {
-	title: 'test title',
+	chartTitle: {
+		title: 'Chart title',
+		intro: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta nisi iusto maxime.'
+	},
 
 	entries: {
 		set1: {
@@ -280,7 +317,9 @@ const content = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__axis_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__functions_calcVertPosition__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state__ = __webpack_require__(0);
 /* eslint no-console:0 */
+
 
 
 
@@ -307,26 +346,26 @@ class Axis {
 
 	renderTicks() {
 		// let interval = this.range / this.count // returns percentage interval
-		console.log(this.range, this.interval);
-		for (let i = 0; i < this.count; i++) {
-			const value = i * this.interval + this.interval;
+		const { width, inset } = __WEBPACK_IMPORTED_MODULE_2__state__["a" /* default */].chartSettings;
+		// console.log(this.range, this.interval)
+		for (let i = 0; i < this.count + 1; i++) {
+			const value = i * this.interval;
 			const ypos = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__functions_calcVertPosition__["a" /* default */])({ value, max: this.max });
 			this.state.ticks.push(`
 				<line class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.gridLine}"
-					x1="40" y1="${ypos}"
-					x2="500" y2="${ypos}"
+					x1="${inset}" y1="${ypos}"
+					x2="${width - inset}" y2="${ypos}"
 				/>
-				
 				<text class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.tickLabel}" 
 					x="0" y="${ypos}" >
-						${i * this.interval + this.interval}
+						${value}
 				</text>
 			`);
 
-			console.log(this.state);
+			// console.log(this.state)
 		}
 
-		console.log(this.state);
+		// console.log(this.state)
 		return this.state.ticks.join('');
 	}
 
@@ -371,8 +410,8 @@ class Dot {
 	}
 
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Dot;
 
+/* harmony default export */ __webpack_exports__["a"] = (Dot);
 
 /***/ }),
 /* 8 */
@@ -389,22 +428,31 @@ class Line {
 		this.x2 = x2;
 		this.y1 = y1;
 		this.y2 = y2;
+		// this.toggleHover = this.toggleHover.bind(this)
 	}
 
+	/*toggleHover(e) {
+ 	console.log('hover!', e)
+ 	// e.target.setAttribute('data-hover', 'true')
+ }*/
+
 	template() {
-		console.log(`x1="${this.x1}" y1="${this.y1}" x2="${this.x2}" y2="${this.y2}" `);
+		// console.log(`x1="${this.x1}" y1="${this.y1}" x2="${this.x2}" y2="${this.y2}" `)
 		return `
 			<svg class="${__WEBPACK_IMPORTED_MODULE_0__line_css___default.a.svgLineWrapper}">
 				<line class="${__WEBPACK_IMPORTED_MODULE_0__line_css___default.a.svgLine}"
 					x1="${this.x1}" y1="${this.y1}" 
 					x2="${this.x2}" y2="${this.y2}" 
+					data-hover='false'
+					
 				/>
 			</svg>
 		`;
 	}
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Line;
 
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Line);
 
 /***/ }),
 /* 9 */
@@ -448,6 +496,83 @@ function calcPosition({ value, max }) {
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (calcPosition);
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/*
+	Control function repetition
+	Useful for controlling how often functions are called on window scroll or resize
+*/
+
+/* eslint-disable */
+function debounce(func, wait = 10, immediate = true) {
+	var timeout;
+	return function () {
+		var context = this,
+		    args = arguments;
+		var later = function () {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+}
+/* eslint-enable */
+
+/* harmony default export */ __webpack_exports__["a"] = (debounce);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__titleblock_css__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__titleblock_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__titleblock_css__);
+
+
+
+const { title, intro } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].content.chartTitle;
+
+class TitleBlock {
+	constructor() {
+		this.state = {
+			title,
+			intro
+		};
+	}
+
+	static templateTitle(text) {
+		return `<h2 class="${__WEBPACK_IMPORTED_MODULE_1__titleblock_css___default.a.title}">${text}</h2>`;
+	}
+
+	static templateIntro(text) {
+		return `<p class="${__WEBPACK_IMPORTED_MODULE_1__titleblock_css___default.a.intro}">${text}</p>`;
+	}
+
+	render() {
+		return `<section>
+			${this.state.title ? TitleBlock.templateTitle(this.state.title) : ''}
+			${this.state.intro ? TitleBlock.templateIntro(this.state.intro) : ''}
+		</section>`;
+	}
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (TitleBlock);
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"common":"titleblock__common___vgUqe","title":"titleblock__title___16vUk titleblock__common___vgUqe","intro":"titleblock__intro___1d4Ra titleblock__common___vgUqe"};
 
 /***/ })
 /******/ ]);
