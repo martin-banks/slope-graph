@@ -393,7 +393,7 @@ class SlopeChart {
 	static renderLines() {
 		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].content;
 		return Object.keys(entries).map(key => `
-				<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.entryWrapper}" data-hover="false">
+				<div class="${__WEBPACK_IMPORTED_MODULE_1__slopeChart_css___default.a.entryWrapper}" data-hover="false" data-label="${entries[key].label}">
 					${entries[key].line.template()}
 					${entries[key].dotleft.template()}
 					${entries[key].dotright.template()}
@@ -494,27 +494,27 @@ const content = {
 
 	entries: {
 		set1: {
-			label: 'Some label',
+			label: 'First label',
 			first: 200,
 			second: 170
 		},
 		set2: {
-			label: 'Some label',
+			label: 'Second label',
 			first: 95,
 			second: 80
 		},
 		set3: {
-			label: 'Some label',
+			label: 'Third label',
 			first: 125,
 			second: 110
 		},
 		set4: {
-			label: 'Some label',
+			label: 'Fourth label',
 			first: 40,
 			second: 100
 		},
 		set5: {
-			label: 'Some label',
+			label: 'Fifth label',
 			first: 180,
 			second: 3
 		}
@@ -786,10 +786,24 @@ module.exports = {"common":"titleblock__common___vgUqe","title":"titleblock__tit
 
 
 
+function toggleLabel({ status, elem }) {
+	if (status === 'true') {
+		console.log('show label!!', elem.dataset.label);
+	}
+}
+
 function handleHover(e) {
-	const wrapper = __WEBPACK_IMPORTED_MODULE_0__utility__["closest"](e.target, `.${__WEBPACK_IMPORTED_MODULE_1__templates_slopeChart_slopeChart_css___default.a.entryWrapper}`);
-	const newVal = wrapper.dataset.hover === 'true' ? 'false' : 'true';
-	wrapper.setAttribute('data-hover', newVal);
+	const elem = __WEBPACK_IMPORTED_MODULE_0__utility__["closest"](e.target, `.${__WEBPACK_IMPORTED_MODULE_1__templates_slopeChart_slopeChart_css___default.a.entryWrapper}`);
+	let status;
+
+	if (elem.dataset.hover === 'true') {
+		status = 'false';
+	} else {
+		status = 'true';
+	}
+
+	toggleLabel({ status, elem });
+	elem.setAttribute('data-hover', status);
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (handleHover);

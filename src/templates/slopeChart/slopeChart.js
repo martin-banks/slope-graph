@@ -76,7 +76,7 @@ export default class SlopeChart {
 		let { entries } = state.content
 		return Object.keys(entries)
 			.map(key => `
-				<div class="${Styles.entryWrapper}" data-hover="false">
+				<div class="${Styles.entryWrapper}" data-hover="false" data-label="${entries[key].label}">
 					${entries[key].line.template()}
 					${entries[key].dotleft.template()}
 					${entries[key].dotright.template()}
