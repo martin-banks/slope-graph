@@ -3,6 +3,7 @@ import Styles from './slopeChart.css'
 import Dot from '../dot/dot'
 import Line from '../line/line'
 import Axis from '../axis/axis'
+import calcPosition from '../../functions/calcVertPosition'
 
 
 export default class SlopeChart {
@@ -12,7 +13,7 @@ export default class SlopeChart {
 		// this.renderDots = this.renderDots.bind(this)
 		// this.renderLines = this.renderLines.bind(this)
 		this.calcRange = this.calcRange.bind(this)
-		this.calcPosition = this.calcPosition.bind(this)
+		// this.calcPosition = this.calcPosition.bind(this)
 		// this.calcPositionX = this.calcPositionX.bind(this)
 
 		this.state = {}
@@ -28,10 +29,10 @@ export default class SlopeChart {
 		this.state.range = this.state.max - this.state.min
 	}
 
-	calcPosition(value) {
-		let percent = (value / this.state.max)
-		return state.chartSettings.height * percent
-	}
+	// calcPosition({ value: value, max: this.state.max }) {
+	// 	let percent = (value / this.state.max)
+	// 	return 0 - (state.chartSettings.height * percent)
+	// }
 
 	static calcPositionX() {
 		let { width, dotSize, inset } = state.chartSettings
@@ -48,13 +49,13 @@ export default class SlopeChart {
 
 			entries[key].dot_left = new Dot({
 				valX: inset,
-				valY: 0 - this.calcPosition(first) - dotSize,
+				valY: calcPosition({ value: first, max: this.state.max }) - dotSize,
 				label,
 			})
 
 			entries[key].dot_right = new Dot({
 				valX: SlopeChart.calcPositionX(),
-				valY: 0 - this.calcPosition(second) - dotSize,
+				valY: calcPosition({ value: second, max: this.state.max }) - dotSize,
 				label,
 				status: first > second ? 'decrease' : 'increase',
 			})
@@ -62,8 +63,8 @@ export default class SlopeChart {
 			entries[key].line = new Line({
 				x1: 0 + inset + dotSize,
 				x2: SlopeChart.calcPositionX(),
-				y1: ((0 - this.calcPosition(first)) + (dotSize / 2)) - dotSize,
-				y2: ((0 - this.calcPosition(second)) + (dotSize / 2)) - dotSize,
+				y1: (calcPosition({ value: first, max: this.state.max }) + (dotSize / 2)) - dotSize,
+				y2: (calcPosition({ value: second, max: this.state.max }) + (dotSize / 2)) - dotSize,
 			})
 		})
 
