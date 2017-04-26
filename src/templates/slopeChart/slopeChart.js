@@ -1,4 +1,4 @@
-import { state } from '../../state'
+import state from '../../state'
 import Styles from './slopeChart.css'
 import Dot from '../dot/dot'
 import Line from '../line/line'
@@ -29,12 +29,6 @@ export default class SlopeChart {
 	}
 
 	calcPosition(value) {
-		/* console.log(
-			'\nvalue', value,
-			'\nrange', this.state.range,
-			'\nmax', this.state.max
-			) */
-
 		let percent = (value / this.state.max)
 		return state.chartSettings.height * percent
 	}

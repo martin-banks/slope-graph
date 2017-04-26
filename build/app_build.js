@@ -72,11 +72,10 @@
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__content_content__ = __webpack_require__(5);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return state; });
 
 
-let state = {
-	content: __WEBPACK_IMPORTED_MODULE_0__content_content__["a" /* content */],
+const state = {
+	content: __WEBPACK_IMPORTED_MODULE_0__content_content__["a" /* default */],
 	chartSettings: {
 		inset: 50,
 		width: null,
@@ -85,6 +84,8 @@ let state = {
 	}
 
 };
+
+/* harmony default export */ __webpack_exports__["a"] = (state);
 
 /***/ }),
 /* 1 */
@@ -331,7 +332,7 @@ class SlopeChart {
 	}
 
 	calcRange() {
-		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
+		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].content;
 		let leftValues = Object.keys(entries).map(key => entries[key].first);
 		let rightValues = Object.keys(entries).map(key => entries[key].second);
 		this.state.max = Math.max(...leftValues, ...rightValues);
@@ -340,24 +341,18 @@ class SlopeChart {
 	}
 
 	calcPosition(value) {
-		/* console.log(
-  	'\nvalue', value,
-  	'\nrange', this.state.range,
-  	'\nmax', this.state.max
-  	) */
-
 		let percent = value / this.state.max;
-		return __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings.height * percent;
+		return __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings.height * percent;
 	}
 
 	static calcPositionX() {
-		let { width, dotSize, inset } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings;
+		let { width, dotSize, inset } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings;
 		return width - inset - dotSize;
 	}
 
 	createElements() {
-		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
-		let { inset, dotSize } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].chartSettings;
+		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].content;
+		let { inset, dotSize } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings;
 
 		Object.keys(entries).forEach(key => {
 			let entry = entries[key];
@@ -392,12 +387,12 @@ class SlopeChart {
 	}
 
 	static renderDots(side) {
-		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
+		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].content;
 		return Object.keys(entries).map(key => entries[key][`dot_${side}`].template()).join('');
 	}
 
 	static renderLines() {
-		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* state */].content;
+		let { entries } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].content;
 		return Object.keys(entries).map(key => entries[key].line.template()).join('');
 	}
 
@@ -448,10 +443,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-__WEBPACK_IMPORTED_MODULE_1__state__["a" /* state */].chartSettings.width = document.querySelector('#appContainer').getBoundingClientRect().width;
+__WEBPACK_IMPORTED_MODULE_1__state__["a" /* default */].chartSettings.width = document.querySelector('#appContainer').getBoundingClientRect().width;
 
 // const isMobile = util.isMobileDevice() // true or false
-const slopeChart = new __WEBPACK_IMPORTED_MODULE_3__templates_slopeChart_slopeChart__["a" /* default */]({ chartWidth: __WEBPACK_IMPORTED_MODULE_1__state__["a" /* state */].chartSettings.width });
+const slopeChart = new __WEBPACK_IMPORTED_MODULE_3__templates_slopeChart_slopeChart__["a" /* default */]({ chartWidth: __WEBPACK_IMPORTED_MODULE_1__state__["a" /* default */].chartSettings.width });
 
 document.querySelector('#appContainer').innerHTML = slopeChart.template();
 
@@ -460,8 +455,7 @@ document.querySelector('#appContainer').innerHTML = slopeChart.template();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return content; });
-let content = {
+const content = {
 	title: 'test title',
 
 	entries: {
@@ -490,9 +484,12 @@ let content = {
 			first: 180,
 			second: 0
 		}
+
 	}
 
 };
+
+/* harmony default export */ __webpack_exports__["a"] = (content);
 
 /***/ }),
 /* 6 */

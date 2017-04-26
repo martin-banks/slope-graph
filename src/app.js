@@ -1,5 +1,5 @@
 import styles from './app.css'
-import { state } from './state'
+import state from './state'
 import * as util from './functions/utility'
 import SlopeChart from './templates/slopeChart/slopeChart'
 

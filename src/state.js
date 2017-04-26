@@ -1,13 +1,14 @@
-import {content} from './content/content'
+import content from './content/content'
 
-export let state = {
-	content: content,
+const state = {
+	content,
 	chartSettings: {
 		inset: 50,
 		width: null,
 		height: 400,
-		dotSize: 20
-	}
-	
-	
+		dotSize: 20,
+	},
+
 }
+
+export default state
