@@ -99,6 +99,8 @@ const state = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dot_dot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__line_line__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__axis_axis__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__functions_calcVertPosition__ = __webpack_require__(13);
+
 
 
 
@@ -112,7 +114,7 @@ class SlopeChart {
 		// this.renderDots = this.renderDots.bind(this)
 		// this.renderLines = this.renderLines.bind(this)
 		this.calcRange = this.calcRange.bind(this);
-		this.calcPosition = this.calcPosition.bind(this);
+		// this.calcPosition = this.calcPosition.bind(this)
 		// this.calcPositionX = this.calcPositionX.bind(this)
 
 		this.state = {};
@@ -128,10 +130,10 @@ class SlopeChart {
 		this.state.range = this.state.max - this.state.min;
 	}
 
-	calcPosition(value) {
-		let percent = value / this.state.max;
-		return __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings.height * percent;
-	}
+	// calcPosition({ value: value, max: this.state.max }) {
+	// 	let percent = (value / this.state.max)
+	// 	return 0 - (state.chartSettings.height * percent)
+	// }
 
 	static calcPositionX() {
 		let { width, dotSize, inset } = __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings;
@@ -148,13 +150,13 @@ class SlopeChart {
 
 			entries[key].dot_left = new __WEBPACK_IMPORTED_MODULE_2__dot_dot__["a" /* default */]({
 				valX: inset,
-				valY: 0 - this.calcPosition(first) - dotSize,
+				valY: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__functions_calcVertPosition__["a" /* default */])({ value: first, max: this.state.max }) - dotSize,
 				label
 			});
 
 			entries[key].dot_right = new __WEBPACK_IMPORTED_MODULE_2__dot_dot__["a" /* default */]({
 				valX: SlopeChart.calcPositionX(),
-				valY: 0 - this.calcPosition(second) - dotSize,
+				valY: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__functions_calcVertPosition__["a" /* default */])({ value: second, max: this.state.max }) - dotSize,
 				label,
 				status: first > second ? 'decrease' : 'increase'
 			});
@@ -162,8 +164,8 @@ class SlopeChart {
 			entries[key].line = new __WEBPACK_IMPORTED_MODULE_3__line_line__["a" /* default */]({
 				x1: 0 + inset + dotSize,
 				x2: SlopeChart.calcPositionX(),
-				y1: 0 - this.calcPosition(first) + dotSize / 2 - dotSize,
-				y2: 0 - this.calcPosition(second) + dotSize / 2 - dotSize
+				y1: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__functions_calcVertPosition__["a" /* default */])({ value: first, max: this.state.max }) + dotSize / 2 - dotSize,
+				y2: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__functions_calcVertPosition__["a" /* default */])({ value: second, max: this.state.max }) + dotSize / 2 - dotSize
 			});
 		});
 
@@ -245,12 +247,12 @@ const content = {
 		},
 		set2: {
 			label: 'Some label',
-			first: 100,
+			first: 95,
 			second: 80
 		},
 		set3: {
 			label: 'Some label',
-			first: 120,
+			first: 125,
 			second: 110
 		},
 		set4: {
@@ -261,7 +263,7 @@ const content = {
 		set5: {
 			label: 'Some label',
 			first: 180,
-			second: 0
+			second: 3
 		}
 
 	}
@@ -277,7 +279,9 @@ const content = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axis_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__axis_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__functions_calcVertPosition__ = __webpack_require__(13);
 /* eslint no-console:0 */
+
 
 
 class Axis {
@@ -290,34 +294,32 @@ class Axis {
 		this.width = width;
 		this.min = min;
 		this.max = max;
-		this.range = this.max - this.min;
 		this.count = count;
 		this.state = {
 			ticks: []
 		};
 
+		this.range = Math.ceil((this.max - this.min) / this.count) * this.count;
+		this.interval = this.range / this.count;
+		this.tickIncrement = 1 / this.count;
 		this.renderTicks = this.renderTicks.bind(this);
 	}
 
 	renderTicks() {
-		let interval = this.range / this.count; // returns percentage interval
-		console.log(this.range, interval);
-		// let calcPos = val => ((val + this.min) / this.max) * 100
+		// let interval = this.range / this.count // returns percentage interval
+		console.log(this.range, this.interval);
 		for (let i = 0; i < this.count; i++) {
+			const value = i * this.interval + this.interval;
+			const ypos = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__functions_calcVertPosition__["a" /* default */])({ value, max: this.max });
 			this.state.ticks.push(`
 				<line class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.gridLine}"
-					x1="0" y1="${i * interval}"
-					x2="500" y2="${i * interval}"
+					x1="40" y1="${ypos}"
+					x2="500" y2="${ypos}"
 				/>
-		   
-				<line class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.tick}"
-					x1="10" y1="${i * interval}"
-					x2="20" y2="${i * interval}"
-				/>
-		   
+				
 				<text class="${__WEBPACK_IMPORTED_MODULE_0__axis_css___default.a.tickLabel}" 
-					x="0" y="${0 - (i * interval + interval)}" >
-						${i * interval + interval}
+					x="0" y="${ypos}" >
+						${i * this.interval + this.interval}
 				</text>
 			`);
 
@@ -409,7 +411,7 @@ class Line {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"gridLine":"axis__gridLine___2vbDU","tick":"axis__tick___1k4_3","tickLabel":"axis__tickLabel___25kT2","axis":"axis__axis___12WE5"};
+module.exports = {"line":"axis__line___27kCQ","gridLine":"axis__gridLine___2vbDU axis__line___27kCQ","tick":"axis__tick___1k4_3 axis__line___27kCQ","tickLabel":"axis__tickLabel___25kT2","axis":"axis__axis___12WE5"};
 
 /***/ }),
 /* 10 */
@@ -431,6 +433,21 @@ module.exports = {"svgLineWrapper":"line__svgLineWrapper___1aXgA","svgLine":"lin
 
 // removed by extract-text-webpack-plugin
 module.exports = {"container":"slopeChart__container___czTU4","lineContainer":"slopeChart__lineContainer___3LePK","dotContainer":"slopeChart__dotContainer___9JGJB","axisContainer":"slopeChart__axisContainer___3zkSZ"};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state__ = __webpack_require__(0);
+
+
+function calcPosition({ value, max }) {
+	let percent = value / max;
+	return 0 - __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */].chartSettings.height * percent;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (calcPosition);
 
 /***/ })
 /******/ ]);
