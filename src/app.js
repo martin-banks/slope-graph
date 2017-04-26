@@ -5,6 +5,7 @@ import handleHover from './functions/onHover'
 import debounce from './functions/debounce'
 import SlopeChart from './templates/slopeChart/slopeChart'
 import TitleBlock from './templates/titleBlock/titleblock'
+import PopupContainer from './templates/popupContainer/popupContainer'
 
 // import slopeStyles from './templates/slopeChart/slopeChart.css'
 import dotStyles from './templates/dot/dot.css'
@@ -14,6 +15,7 @@ import lineStyle from './templates/line/line.css'
 
 const slopeChart = new SlopeChart({ chartWidth: state.chartSettings.width })
 const titleBlock = new TitleBlock()
+const popupContainer = new PopupContainer()
 const appContainer = document.querySelector('#appContainer')
 const { delegate } = util
 
@@ -25,6 +27,7 @@ function renderChart() {
 	appContainer.innerHTML = [
 		titleBlock.render(),
 		slopeChart.template(),
+		popupContainer.render(),
 	].join('')
 }
 
