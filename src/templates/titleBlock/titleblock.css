@@ -1,0 +1,23 @@
+.common {
+	position: relative;
+	display: block;
+	font-family: "Guardian Sans" sans-serif;
+	text-rendering: optimizeLegibility;
+	margin: 0;
+	padding: 0;
+}
+
+.title {
+	composes: common;
+	font-family: "Guardian Sans Cond" "Guardian Sans" sans-serif;
+	font-size: 24px;
+	line-height: 1;
+	margin-bottom: 8px;
+	margin-top: 32px;
+}
+
+.intro {
+	composes: common;
+	margin-bottom: 32px;
+	padding-bottom: 32px;
+}
