@@ -1,6 +1,6 @@
-import styles from './app.css'
+// import styles from './app.css'
 import state from './state'
-import * as util from './functions/utility'
+// import * as util from './functions/utility'
 import SlopeChart from './templates/slopeChart/slopeChart'
 
 state.chartSettings.width = document.querySelector('#appContainer').getBoundingClientRect().width
